@@ -19,4 +19,12 @@ fn main() {
         println!("{}\n", "=".repeat(post.title.len()));
         println!("{}", post.body);
     }
+
+    let unpublished = posts
+        .filter(published.eq(false))
+        .count()
+        .get_result::<i64>(connection)
+        .expect("Error loading unpublished posts count");
+
+    println!("There are {} unpublished posts", unpublished);
 }
