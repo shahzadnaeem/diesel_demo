@@ -14,7 +14,7 @@ fn main() {
         .expect("Error loading posts");
 
     println!("Displaying {} posts", results.len());
-    for post in results {
+    for post in &results {
         println!("{}", post.title);
         println!("{}\n", "=".repeat(post.title.len()));
         println!("{}", post.body);
@@ -27,4 +27,7 @@ fn main() {
         .expect("Error loading unpublished posts count");
 
     println!("There are {} unpublished posts", unpublished);
+
+    println!("\n\nAs JSON");
+    println!("  {}", serde_json::to_string(&results).unwrap());
 }
