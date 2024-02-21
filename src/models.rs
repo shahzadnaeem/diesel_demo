@@ -1,6 +1,8 @@
 use diesel::prelude::*;
 use serde::Serialize;
 
+use crate::schema::{posts, categories};
+
 #[derive(Queryable, Serialize)]
 pub struct Post {
     pub id: i32,
@@ -9,11 +11,29 @@ pub struct Post {
     pub published: bool,
 }
 
-use crate::schema::posts;
-
 #[derive(Insertable)]
 #[diesel(table_name = posts)]
 pub struct NewPost<'a> {
     pub title: &'a str,
     pub body: &'a str,
+}
+
+#[derive(Queryable, Serialize)]
+pub struct Category {
+    pub id: i32,
+    pub value: String,
+    pub display_value: String,
+    pub display_order: i32,
+    pub enum_id: i32,
+    pub parent_id: Option<i32>
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = categories)]
+pub struct NewCategory<'a> {
+    pub value: &'a str,
+    pub display_value: &'a str,
+    pub display_order: i32,
+    pub enum_id: i32,
+    pub parent_id: Option<i32>
 }

@@ -1,4 +1,4 @@
-use diesel_demo::*;
+use diesel_demo::{connect::establish_connection, repository::post::create_post};
 use std::io::{stdin, Read};
 
 fn main() {

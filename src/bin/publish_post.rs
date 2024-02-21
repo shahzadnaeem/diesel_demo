@@ -1,6 +1,5 @@
-use self::models::Post;
 use diesel::prelude::*;
-use diesel_demo::*;
+use diesel_demo::{connect::establish_connection, models::Post, schema};
 use std::env::args;
 
 fn main() {

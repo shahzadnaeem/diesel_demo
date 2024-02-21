@@ -1,7 +1,5 @@
 use diesel::prelude::*;
-use diesel_demo::*;
-
-use self::models::*;
+use diesel_demo::{connect::establish_connection, models::Post, schema};
 
 fn main() {
     use self::schema::posts::dsl::*;

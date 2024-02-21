@@ -1,5 +1,5 @@
 use diesel::prelude::*;
-use diesel_demo::*;
+use diesel_demo::{connect::establish_connection, schema};
 use std::env::args;
 
 fn main() {
