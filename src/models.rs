@@ -4,7 +4,7 @@ use serde::Serialize;
 
 use crate::schema::{categories, posts};
 
-#[derive(Queryable, Serialize)]
+#[derive(Queryable, Serialize, Debug)]
 pub struct Post {
     pub id: i32,
     pub title: String,
@@ -19,7 +19,7 @@ pub struct NewPost<'a> {
     pub body: &'a str,
 }
 
-#[derive(Queryable, Serialize)]
+#[derive(Queryable, Serialize, Debug)]
 pub struct Category {
     pub id: i32,
     pub value: String,
@@ -38,6 +38,9 @@ pub struct NewCategory<'a> {
     pub enum_id: i32,
     pub parent_id: Option<i32>,
 }
+
+// NOTE: Model used for direct query of SEQUENCE used to get unique
+//       Parent Category Enum ID - see category.rs
 
 #[derive(QueryableByName, Serialize, Debug)]
 pub struct Catenumid {
