@@ -1,8 +1,8 @@
 use diesel_demo::{
     connect::establish_connection,
     repository::category::{
-        all_categories, category_by_name, create_category, next_parent_enum_id_for,
-        num_category_entries,
+        all_categories, category_by_name, category_entries, create_category,
+        next_parent_enum_id_for, num_category_entries,
     },
 };
 
@@ -77,5 +77,10 @@ fn main() {
     println!("\nAll Categories");
     for cat in categories {
         println!("\t{:?}", cat);
+        if let Some(entries) = category_entries(connection, &cat.value) {
+            for entry in entries {
+                println!("\t\t{:?}", entry);
+            }
+        }
     }
 }

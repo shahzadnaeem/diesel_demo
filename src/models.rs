@@ -1,5 +1,5 @@
 use diesel::prelude::*;
-use diesel::sql_types::Bigint;
+use diesel::sql_types::BigInt;
 use serde::Serialize;
 
 use crate::schema::{categories, posts};
@@ -44,6 +44,6 @@ pub struct NewCategory<'a> {
 
 #[derive(QueryableByName, Serialize, Debug)]
 pub struct Catenumid {
-    #[diesel(sql_type = Bigint)]
+    #[diesel(sql_type = BigInt)]
     pub enum_id: i64,
 }

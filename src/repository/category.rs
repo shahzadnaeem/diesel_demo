@@ -78,6 +78,21 @@ pub fn category_id_by_name(conn: &mut PgConnection, category_name: &str) -> Opti
     }
 }
 
+pub fn category_entries(conn: &mut PgConnection, category_name: &str) -> Option<Vec<Category>> {
+    use crate::schema::categories::dsl::*;
+
+    if let Some(cat_parent_id) = category_id_by_name(conn, category_name) {
+        let entries: Vec<Category> = categories
+            .filter(parent_id.eq(cat_parent_id))
+            .load(conn)
+            .expect("Error getting Category Entries");
+
+        Some(entries)
+    } else {
+        None
+    }
+}
+
 pub fn num_category_entries(conn: &mut PgConnection, category_name: &str) -> Option<i32> {
     use crate::schema::categories::dsl::*;
 
