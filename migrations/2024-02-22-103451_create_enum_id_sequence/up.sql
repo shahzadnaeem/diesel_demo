@@ -1,0 +1,1 @@
+CREATE SEQUENCE catenumid START 100;

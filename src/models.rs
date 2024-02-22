@@ -1,7 +1,8 @@
 use diesel::prelude::*;
+use diesel::sql_types::Bigint;
 use serde::Serialize;
 
-use crate::schema::{posts, categories};
+use crate::schema::{categories, posts};
 
 #[derive(Queryable, Serialize)]
 pub struct Post {
@@ -25,7 +26,7 @@ pub struct Category {
     pub display_value: String,
     pub display_order: i32,
     pub enum_id: i32,
-    pub parent_id: Option<i32>
+    pub parent_id: Option<i32>,
 }
 
 #[derive(Insertable)]
@@ -35,5 +36,11 @@ pub struct NewCategory<'a> {
     pub display_value: &'a str,
     pub display_order: i32,
     pub enum_id: i32,
-    pub parent_id: Option<i32>
+    pub parent_id: Option<i32>,
+}
+
+#[derive(QueryableByName, Serialize, Debug)]
+pub struct Catenumid {
+    #[diesel(sql_type = Bigint)]
+    pub enum_id: i64,
 }

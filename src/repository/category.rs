@@ -1,6 +1,6 @@
-use crate::models::{Category, NewCategory};
-use diesel::prelude::*;
+use crate::models::{Category, Catenumid, NewCategory};
 use diesel::PgConnection;
+use diesel::{prelude::*, sql_query};
 
 pub fn create_category(
     conn: &mut PgConnection,
@@ -42,4 +42,12 @@ pub fn category_exists(conn: &mut PgConnection, category_name: &str) -> bool {
         .expect("Error finding Category Name");
 
     n == 1
+}
+
+pub fn next_parent_enum_id(conn: &mut PgConnection) -> i64 {
+    let next = sql_query("SELECT nextval('catenumid') as enum_id")
+        .load::<Catenumid>(conn)
+        .unwrap();
+
+    next[0].enum_id
 }
