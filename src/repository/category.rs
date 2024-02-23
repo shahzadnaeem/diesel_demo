@@ -32,6 +32,24 @@ pub fn create_category(
     }
 }
 
+pub fn delete_category(conn: &mut PgConnection, name: &str) -> Option<i32> {
+    use crate::schema::categories::dsl::*;
+
+    if let Some(category) = category_by_name(conn, name) {
+        let num_deleted = diesel::delete(categories.filter(parent_id.eq(category.id)))
+            .execute(conn)
+            .expect("Error deleting Category Entries");
+
+        diesel::delete(categories.filter(id.eq(category.id)))
+            .execute(conn)
+            .expect("Error deleting Category Entries");
+
+        Some(num_deleted as i32)
+    } else {
+        None
+    }
+}
+
 pub fn category_exists(conn: &mut PgConnection, category_name: &str) -> bool {
     use crate::schema::categories::dsl::*;
 
