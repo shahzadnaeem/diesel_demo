@@ -1,13 +1,3 @@
-use diesel_demo::{
-    connect::establish_connection,
-    repository::category::{
-        all_categories, category_by_name, category_entries, create_category,
-        next_parent_enum_id_for, num_category_entries,
-    },
-};
-
-use std::{path::PathBuf, process::ExitCode};
-
 #[path = "catman/mod.rs"]
 mod commands;
 
@@ -39,9 +29,9 @@ struct AddArgs {
 fn main() -> Result<(), String> {
     let app = App::parse();
 
-    println!("Let's start");
+    let res = match &app.command {
+        Commands::Add(args) => add_command(args)?,
+    };
 
-    match &app.command {
-        Commands::Add(args) => Ok(add_command(args)?),
-    }
+    Ok(res)
 }
