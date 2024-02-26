@@ -1,7 +1,9 @@
 #[path = "catman/mod.rs"]
 mod commands;
 
-use commands::{add_command, delete_command, entries_command, list_command, show_command};
+use commands::{
+    add_command, delete_command, entries_command, entry_command, list_command, show_command,
+};
 
 use clap::{Args, Parser, Subcommand};
 
@@ -19,6 +21,7 @@ enum Commands {
     List(ListArgs),
     Show(NameArg),
     Entries(NameArg),
+    Entry(EntryArgs),
     Delete(NameArg),
 }
 
@@ -26,7 +29,7 @@ enum Commands {
 struct AddArgs {
     name: String,
     disp_name: Option<String>,
-    #[arg(default_value_t = 20)]
+    #[arg(short, long, default_value_t = 20)]
     num_entries: i32,
 }
 
@@ -41,6 +44,12 @@ struct NameArg {
     name: String,
 }
 
+#[derive(Args, Debug, Clone)]
+struct EntryArgs {
+    cat_name: String,
+    entry_name: String,
+}
+
 fn main() -> Result<(), String> {
     let app = App::parse();
 
@@ -49,6 +58,7 @@ fn main() -> Result<(), String> {
         Commands::List(args) => list_command(args)?,
         Commands::Show(args) => show_command(args)?,
         Commands::Entries(args) => entries_command(args)?,
+        Commands::Entry(args) => entry_command(args)?,
         Commands::Delete(args) => delete_command(args)?,
     };
 

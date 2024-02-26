@@ -111,6 +111,41 @@ pub fn category_entries(conn: &mut PgConnection, category_name: &str) -> Option<
     }
 }
 
+pub fn entry_by_name(
+    conn: &mut PgConnection,
+    category_name: &str,
+    entry_name: &str,
+) -> Option<Category> {
+    use crate::schema::categories::dsl::*;
+
+    if let Some(cat_parent_id) = category_id_by_name(conn, category_name) {
+        let mut entry: Vec<Category> = categories
+            .filter(parent_id.eq(cat_parent_id).and(value.eq(entry_name)))
+            .load(conn)
+            .expect("Error getting Category Entry");
+
+        if entry.len() == 1 {
+            Some(entry.swap_remove(0))
+        } else {
+            None
+        }
+    } else {
+        None
+    }
+}
+
+pub fn entry_id_by_name(
+    conn: &mut PgConnection,
+    category_name: &str,
+    entry_name: &str,
+) -> Option<i32> {
+    if let Some(entry) = entry_by_name(conn, category_name, entry_name) {
+        Some(entry.id)
+    } else {
+        None
+    }
+}
+
 pub fn num_category_entries(conn: &mut PgConnection, category_name: &str) -> Option<i32> {
     use crate::schema::categories::dsl::*;
 

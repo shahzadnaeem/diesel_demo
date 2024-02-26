@@ -12,6 +12,24 @@ diesel::table! {
 }
 
 diesel::table! {
+    catents (id) {
+        id -> Int4,
+        name -> Varchar,
+        alt_name -> Varchar,
+        enum_id -> Int4,
+        cat_id -> Int4,
+    }
+}
+
+diesel::table! {
+    cats (id) {
+        id -> Int4,
+        name -> Varchar,
+        alt_name -> Varchar,
+    }
+}
+
+diesel::table! {
     posts (id) {
         id -> Int4,
         title -> Varchar,
@@ -20,7 +38,11 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(catents -> cats (cat_id));
+
 diesel::allow_tables_to_appear_in_same_query!(
     categories,
+    catents,
+    cats,
     posts,
 );

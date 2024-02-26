@@ -2,11 +2,11 @@ use diesel_demo::{
     connect::establish_connection,
     repository::category::{
         all_categories, category_by_name, category_entries, create_category, delete_category,
-        next_parent_enum_id_for, num_category_entries,
+        entry_by_name, next_parent_enum_id_for, num_category_entries,
     },
 };
 
-use crate::{AddArgs, ListArgs, NameArg};
+use crate::{AddArgs, EntryArgs, ListArgs, NameArg};
 
 pub fn add_command(args: &AddArgs) -> Result<(), String> {
     // println!("\t{:?}", args);
@@ -124,6 +124,22 @@ pub fn entries_command(args: &NameArg) -> Result<(), String> {
         }
     } else {
         return Err(format!("No category '{}' exists", &args.name));
+    }
+
+    Ok(())
+}
+
+pub fn entry_command(args: &EntryArgs) -> Result<(), String> {
+    let connection = &mut establish_connection();
+
+    if let Some(entry) = entry_by_name(connection, &args.cat_name, &args.entry_name) {
+        println!("# Entry '{}.{}':", args.cat_name, args.entry_name);
+        println!("#   {:?}", entry);
+    } else {
+        return Err(format!(
+            "No entry '{}.{}' exists",
+            args.cat_name, args.entry_name
+        ));
     }
 
     Ok(())
